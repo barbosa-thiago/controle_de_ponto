@@ -1,0 +1,22 @@
+spring:
+  ### Database ###
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+
+  ### Flyway ###
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+
+jwt:
+  secret: ${JWT_SECRET}
