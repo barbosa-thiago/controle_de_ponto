@@ -21,3 +21,9 @@ A seguintes variáveis de ambiente são necessárias para subir a aplicação:
 - PostgreSQL
 - Flyway
 - Spring Security
+
+#### Subindo aplicação com docker
+
+Da raiz do projeto, digite o comando:
+
+    docker-compose up
