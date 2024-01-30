@@ -52,7 +52,7 @@ public class ExceptionController {
 
         var message = ResponseException.builder()
             .status(ex.getStatus())
-            .message(ex.getMessage())
+            .message(ex.getReason())
         .build();
 
         return new ResponseEntity<>(message, ex.getStatus());
