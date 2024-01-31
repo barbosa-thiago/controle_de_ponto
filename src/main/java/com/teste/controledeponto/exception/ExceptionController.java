@@ -1,8 +1,6 @@
 package com.teste.controledeponto.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -10,7 +8,6 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
@@ -37,7 +34,7 @@ public class ExceptionController {
 
         var message = ResponseException.builder()
             .status(HttpStatus.BAD_REQUEST)
-            .message(ex.getMessage())
+            .message("Campo obrigatório não informado")
         .build();
 
         return new ResponseEntity<>(message, message.getStatus());

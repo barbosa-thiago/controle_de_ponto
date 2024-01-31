@@ -1,6 +1,7 @@
 package com.teste.controledeponto.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Value;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseException {
     HttpStatus status;
+    @JsonProperty("mensagem")
     String message;
 
     public int getStatusCode() {

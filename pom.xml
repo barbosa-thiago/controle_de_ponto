@@ -21,6 +21,7 @@
         <jjwt-jackson.version>0.12.3</jjwt-jackson.version>
         <jjwt-api.version>0.12.3</jjwt-api.version>
         <jjwt-impl.version>0.12.3</jjwt-impl.version>
+        <postgresql-test-container.version>1.19.3</postgresql-test-container.version>
     </properties>
     <dependencies>
         <dependency>
@@ -92,7 +93,7 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
-            <version>1.19.3</version>
+            <version>${postgresql-test-container.version}</version>
             <scope>test</scope>
         </dependency>
 

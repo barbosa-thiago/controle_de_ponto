@@ -1,7 +1,6 @@
 package com.teste.controledeponto.controller;
 
 import com.teste.controledeponto.dto.clockin.ClockinDTO;
-import com.teste.controledeponto.mapper.ClockinMapper;
 import com.teste.controledeponto.model.User;
 import com.teste.controledeponto.service.ClockInService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import javax.validation.Valid;
 public class ClockInController {
 
     private final ClockInService clockInService;
-    private final ClockinMapper mapper;
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody @Valid ClockinDTO body,
