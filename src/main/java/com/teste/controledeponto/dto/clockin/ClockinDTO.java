@@ -16,6 +16,6 @@ public class ClockinDTO {
 
 
     @JsonProperty(value = "dataHora")
-    @NotEmpty(message = "DataHora nao pode ser nulo")
+    @NotEmpty(message = "Campo obrigatório não informado")
     String dateTime;
 }
