@@ -1,7 +1,6 @@
 package com.teste.controledeponto.service;
 
 import com.teste.controledeponto.dto.clockin.ClockinDTO;
-import com.teste.controledeponto.mapper.ClockinMapper;
 import com.teste.controledeponto.model.ClockIn;
 import com.teste.controledeponto.model.User;
 import com.teste.controledeponto.repository.ClockInRepository;
@@ -23,7 +22,6 @@ import java.util.List;
 public class ClockInService {
 
     private final ClockInRepository clockInRepository;
-    private final ClockinMapper mapper;
 
     public ClockIn save(ClockinDTO body, User user) {
 
@@ -47,7 +45,7 @@ public class ClockInService {
             todayClockIns.sort(Comparator.comparing(ClockIn::getDateTime));
             if (todayClockIns.get(1).getDateTime().isAfter(dateTime.minusHours(1)))
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Horário de almoço não pode ser menor que 1 hora");
+                    "Deve haver no mínimo 1 hora de almoço");
         }
 
         var dayOfWeek = dateTime.getDayOfWeek();

@@ -27,3 +27,21 @@ A seguintes variáveis de ambiente são necessárias para subir a aplicação:
 Da raiz do projeto, digite o comando:
 
     docker-compose up
+
+#### Testando a aplicação
+
+Para fins de teste, foram adicionados 2 usuários no bano de dados:
+
+    username: teste, password: teste
+
+    username: teste2, password: teste2
+
+Para adquirir o token de autenticação, o endpoint **/authenticate** aceita <br /> um método POST com o seguinte payload:
+
+```json
+{
+  "username": "teste",
+  "password": "teste"
+}
+
+```
