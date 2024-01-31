@@ -1,25 +1,21 @@
 package com.teste.controledeponto.dto.clockin;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Value;
+import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotEmpty;
 
-@Value
 @Jacksonized
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClockinDTO {
 
-    @NotNull
+
     @JsonProperty(value = "dataHora")
-    LocalDateTime dateTime;
+    @NotEmpty(message = "DataHora nao pode ser nulo")
+    String dateTime;
 }
