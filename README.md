@@ -13,6 +13,10 @@ A seguintes variáveis de ambiente são necessárias para subir a aplicação:
     DB_NAME=<nomedo-banco>
     JWT_SECRET=<assinatura-token>
 
+A documentação do swagger estará acessível no endpoint:
+
+http://localhost:8080/docs
+
 #### Tecnologias
 
 - Maven
@@ -30,7 +34,7 @@ Da raiz do projeto, digite o comando:
 
 #### Testando a aplicação
 
-Para fins de teste, foram adicionados 2 usuários no bano de dados:
+Para fins de teste, foram adicionados 2 usuários no banco de dados:
 
     username: teste, password: teste
 
