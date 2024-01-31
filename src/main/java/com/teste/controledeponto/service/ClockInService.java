@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 
@@ -25,12 +27,14 @@ public class ClockInService {
 
     public ClockIn save(ClockinDTO body, User user) {
 
-        List<ClockIn> todayClockIns = clockInRepository.findByUserIdAndDate(user.getId(), body.getDateTime().toLocalDate());
+        var dateTime = LocalDateTime.parse(body.getDateTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        List<ClockIn> todayClockIns = clockInRepository.findByUserIdAndDate(user.getId(), dateTime.toLocalDate());
 
         boolean conflict = todayClockIns.stream()
-            .anyMatch(clockIn -> clockIn.getDateTime().equals(body.getDateTime()));
+            .anyMatch(clockIn -> clockIn.getDateTime().equals(dateTime));
 
-        if(conflict) {
+        if (conflict) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Horário já registrado");
         }
 
@@ -39,21 +43,24 @@ public class ClockInService {
                 "Apenas 4 horários podem ser registrados por dia");
         }
 
-        if(todayClockIns.size() == 2) {
+        if (todayClockIns.size() == 2) {
             todayClockIns.sort(Comparator.comparing(ClockIn::getDateTime));
-            if(todayClockIns.get(1).getDateTime().isAfter(body.getDateTime().minusHours(1)))
+            if (todayClockIns.get(1).getDateTime().isAfter(dateTime.minusHours(1)))
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Horário de almoço não pode ser menor que 1 hora");
         }
 
-        var dayOfWeek = body.getDateTime().getDayOfWeek();
-        if(dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY)) {
+        var dayOfWeek = dateTime.getDayOfWeek();
+        if (dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 "Sábado e domingo não são permitidos como dia de trabalho");
         }
 
-        var clockIn = mapper.dtoToEntity(body);
-        clockIn.setUser(user);
+        var clockIn = ClockIn.builder()
+            .dateTime(dateTime)
+            .user(user)
+            .build();
+
         return clockInRepository.save(clockIn);
     }
 }

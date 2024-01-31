@@ -5,6 +5,7 @@ import com.teste.controledeponto.dto.jwt.JwtRequest;
 import com.teste.controledeponto.dto.jwt.JwtResponse;
 import com.teste.controledeponto.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -34,7 +35,8 @@ public class UserController {
 
         var token = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new JwtResponse(token));
     }
 
     private void authenticate(String username, String password) {
