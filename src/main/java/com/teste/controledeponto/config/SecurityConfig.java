@@ -36,7 +36,9 @@ public class SecurityConfig {
         http.cors().and().csrf().disable()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests().antMatchers("/authenticate").permitAll()
+            .authorizeRequests()
+            .antMatchers("/authenticate", "/v3/**", "/swagger-ui/**", "/docs/**").permitAll()
+            .antMatchers().permitAll()
             .anyRequest().authenticated();
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
