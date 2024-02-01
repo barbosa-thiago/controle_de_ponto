@@ -16,6 +16,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.time.DayOfWeek;
@@ -30,7 +32,14 @@ class ClockInControllerTest {
 
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
         "postgres:15-alpine"
-    );
+    ).withExposedPorts(5433, 5432);
+
+    @DynamicPropertySource
+     static void postgresqlProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
 
     @Autowired
     TestRestTemplate restTemplate;
@@ -58,7 +67,6 @@ class ClockInControllerTest {
     @DisplayName("save clockin when successfull")
     void clockin_Save_Successful() {
         clockInRepository.deleteAll();
-        System.out.println("size: " +clockInRepository.findAll().size());
         ClockinDTO clockinDTO = ClockinDTO.builder().dateTime(LocalDateTime.now().toString()).build();
 
         var url = String.format("http://localhost:%s/batidas", localPort);
@@ -195,4 +203,6 @@ class ClockInControllerTest {
         headers.setBearerAuth(jwtToken);
         return headers;
     }
+
+
 }
