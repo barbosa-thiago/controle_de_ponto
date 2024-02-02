@@ -30,7 +30,7 @@ public class ClockInService {
         clockInValidateChain.getFirst()
             .validate(todayClockIns, dateTime);
 
-        log.info("Clockin allowed for user {} at {}", user.getUsername(), dateTime);
+        log.info("Batida de ponto validada para usuário {} às {}", user.getUsername(), dateTime);
 
         var clockIn = ClockIn.builder()
             .dateTime(dateTime)
