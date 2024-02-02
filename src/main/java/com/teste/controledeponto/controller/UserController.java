@@ -43,9 +43,9 @@ public class UserController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new DisabledException("User disabled", e);
+            throw new DisabledException("Usuário não habilitado", e);
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Invalid credentials", e);
+            throw new BadCredentialsException("Credenciais inválidas", e);
         }
     }
 }

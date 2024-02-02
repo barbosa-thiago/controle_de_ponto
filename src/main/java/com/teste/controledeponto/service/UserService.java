@@ -29,10 +29,10 @@ public class UserService implements UserDetailsService {
         var user = userRepository.findByUsername(username);
 
         if (isNull(user)) {
-            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
+            throw new UsernameNotFoundException(String.format("Usuário '%s' não encontrado", username));
         }
 
-        log.info("User found '{}'", user.getUsername());
+        log.info("Usuário encontrado '{}'", user.getUsername());
 
         return new CustomUserDetails(user);
     }
