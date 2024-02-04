@@ -27,8 +27,12 @@ public class UserController {
     private final UserService userDetailsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) {
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) {
+
+        var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+            authenticationRequest.getUsername(), authenticationRequest.getPassword()
+        );
+        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         var userDetails = userDetailsService
             .loadUserByUsername(authenticationRequest.getUsername());
@@ -37,15 +41,5 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(new JwtResponse(token));
-    }
-
-    private void authenticate(String username, String password) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new DisabledException("Usuário não habilitado", e);
-        } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Credenciais inválidas", e);
-        }
     }
 }
