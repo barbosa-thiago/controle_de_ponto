@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +25,30 @@ public class ExceptionController {
         var message = ResponseException.builder()
             .status(HttpStatus.BAD_REQUEST)
             .message("Data e hora em formato inválido")
+            .build();
+
+        return new ResponseEntity<>(message, message.getStatus());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handle(BadCredentialsException ex) {
+        log.error(ex.getClass().getName(), ex);
+
+        var message = ResponseException.builder()
+            .status(HttpStatus.BAD_REQUEST)
+            .message(ex.getMessage())
+            .build();
+
+        return new ResponseEntity<>(message, message.getStatus());
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<?> handle(DisabledException ex) {
+        log.error(ex.getClass().getName(), ex);
+
+        var message = ResponseException.builder()
+            .status(HttpStatus.BAD_REQUEST)
+            .message(ex.getMessage())
             .build();
 
         return new ResponseEntity<>(message, message.getStatus());
