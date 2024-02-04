@@ -67,7 +67,9 @@ class ClockInControllerTest {
     @DisplayName("save clockin when successfull")
     void clockin_Save_Successful() {
         clockInRepository.deleteAll();
-        ClockinDTO clockinDTO = ClockinDTO.builder().dateTime(LocalDateTime.now().toString()).build();
+
+        var lastFriday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));
+        ClockinDTO clockinDTO = ClockinDTO.builder().dateTime(lastFriday.toString()).build();
 
         var url = String.format("http://localhost:%s/batidas", localPort);
 
@@ -85,7 +87,9 @@ class ClockInControllerTest {
     @DisplayName("Conflict when time already registered")
     void clockin_Conflict() {
         clockInRepository.deleteAll();
-        ClockinDTO clockinDTO = ClockinDTO.builder().dateTime(LocalDateTime.now().toString()).build();
+
+        var lastFriday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));
+        ClockinDTO clockinDTO = ClockinDTO.builder().dateTime(lastFriday.toString()).build();
 
         var url = String.format("http://localhost:%s/batidas", localPort);
 
@@ -108,10 +112,11 @@ class ClockInControllerTest {
     @DisplayName("At least 1 hour of lunch time or exception is thrown")
     void clockin_OneHourLunch_ThrowsException() {
         clockInRepository.deleteAll();
+        var lastFriday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));
         var clockinDTOS = List.of(
-            ClockinDTO.builder().dateTime(LocalDateTime.now().minusHours(1).toString()).build(),
-            ClockinDTO.builder().dateTime(LocalDateTime.now().minusMinutes(30).toString()).build(),
-            ClockinDTO.builder().dateTime(LocalDateTime.now().toString()).build()
+            ClockinDTO.builder().dateTime(lastFriday.minusHours(1).toString()).build(),
+            ClockinDTO.builder().dateTime(lastFriday.minusMinutes(30).toString()).build(),
+            ClockinDTO.builder().dateTime(lastFriday.toString()).build()
         );
 
         var url = String.format("http://localhost:%s/batidas", localPort);
@@ -156,12 +161,14 @@ class ClockInControllerTest {
     void clockin_FourClockinsADay_ThorwsException() {
         clockInRepository.deleteAll();
 
+        var lastFriday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));
+
         var clockinDTOS = List.of(
-            ClockinDTO.builder().dateTime(LocalDateTime.now().minusHours(3).toString()).build(),
-            ClockinDTO.builder().dateTime(LocalDateTime.now().minusHours(2).toString()).build(),
-            ClockinDTO.builder().dateTime(LocalDateTime.now().minusHours(1).toString()).build(),
-            ClockinDTO.builder().dateTime(LocalDateTime.now().minusMinutes(30).toString()).build(),
-            ClockinDTO.builder().dateTime(LocalDateTime.now().toString()).build()
+            ClockinDTO.builder().dateTime(lastFriday.minusHours(3).toString()).build(),
+            ClockinDTO.builder().dateTime(lastFriday.minusHours(2).toString()).build(),
+            ClockinDTO.builder().dateTime(lastFriday.minusHours(1).toString()).build(),
+            ClockinDTO.builder().dateTime(lastFriday.minusMinutes(30).toString()).build(),
+            ClockinDTO.builder().dateTime(lastFriday.toString()).build()
         );
 
         var url = String.format("http://localhost:%s/batidas", localPort);
